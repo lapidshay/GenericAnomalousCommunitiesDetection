@@ -3,7 +3,6 @@
 # PyCharm and Jupyter folders
 .idea
 .ipynb_checkpoints
-.tests
 
 # My Folders
 

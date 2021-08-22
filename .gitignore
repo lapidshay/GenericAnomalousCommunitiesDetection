@@ -6,10 +6,10 @@
 
 # My Folders
 
-.tests
-.SODA
-.FeaturesAnalysis
-.AnomalousCommunityDetection/archive
+.tests/
+.SODA/
+.FeaturesAnalysis/
+.AnomalousCommunityDetection/archive/
 
 # My Files
 SecretTry.py

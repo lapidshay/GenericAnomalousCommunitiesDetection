@@ -2,14 +2,14 @@
 
 # PyCharm and Jupyter folders
 .idea
-.ipynb_checkpoints
+ipynb_checkpoints/
 
 # My Folders
 
-.tests/
-.SODA/
-.FeaturesAnalysis/
-.AnomalousCommunityDetection/archive/
+tests/
+SODA/
+FeaturesAnalysis/
+AnomalousCommunityDetection/archive/
 
 # My Files
 SecretTry.py

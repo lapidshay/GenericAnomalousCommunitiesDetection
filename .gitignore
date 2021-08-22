@@ -3,8 +3,10 @@
 # PyCharm and Jupyter folders
 .idea
 .ipynb_checkpoints
+.tests
 
 # My Folders
+
 .tests
 .SODA
 .FeaturesAnalysis

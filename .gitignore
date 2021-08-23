@@ -5,8 +5,8 @@
 .ipynb_checkpoints/
 
 # My Folders
-*archive/  # all archived folders which shuold stay local for now
-*Checkpoint/  # all Checkpoint folders which are used locally to shorten computation times
+*.archive/  # all archived folders which shuold stay local for now
+*.Checkpoint/  # all Checkpoint folders which are used locally to shorten computation times
 .tests/
 .SODA/
 .FeaturesAnalysis/

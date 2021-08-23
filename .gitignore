@@ -5,7 +5,7 @@
 ipynb_checkpoints/
 
 # My Folders
-archive/  # all archived folders which shuols stay local for now
+*archive/  # all archived folders which shuols stay local for now
 tests/
 SODA/
 FeaturesAnalysis/

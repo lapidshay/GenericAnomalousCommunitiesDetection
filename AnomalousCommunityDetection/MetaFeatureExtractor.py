@@ -121,8 +121,8 @@ class MetaFeatureExtractor:
 		#intercept = 14.78863
 		#intercept = 24.10015  # 21.04 try
 
-		weights = np.array([0.15183381, -0.03859362, 0.00116014, 0.14657687, -0.0609772])  # 29.04.21 reddit
-
+		#weights = np.array([0.15183381, -0.03859362, 0.00116014, 0.14657687, -0.0609772])  # 29.04.21 reddit
+		weights = np.array([-0.5, 0.5, 0, -0.5, 0.5])  # 2021-09-03 try equal weight
 		meta_feats_arr = np.vstack((npmean, npstd, npmed, prlmean, prlstd)).T
 		return np.squeeze(meta_feats_arr.dot(weights))
 

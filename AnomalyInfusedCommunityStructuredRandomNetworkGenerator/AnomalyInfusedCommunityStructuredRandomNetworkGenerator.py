@@ -2,7 +2,7 @@
 TODO: Check this code again!
 TODO: add module docstring.
 TODO: support other normal and anomaly algorithms
-TODO: fix random state and choose np or random random state
+TODO: fix random state and choose np or random random state.
 """
 
 __author__ = 'Shay Lapid'

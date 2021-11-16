@@ -1,2 +1,5 @@
 requests
 xgboost
+tqdm
+numpy
+pandas

@@ -10,6 +10,8 @@
 tests/
 SODA/
 FeaturesAnalysis/
+Evaluation/Reddit/Experiment
+Evaluation/GeneratdNetwork/Experiment
 
 # My Files
 SecretTry.py

@@ -23,6 +23,7 @@ class NetworkSampler:
 	"""
 	TODO: document
 	"""
+
 	def __init__(self, community_part_label: str, vertex_part_label: str):
 		"""
 		Inits a...
@@ -30,9 +31,10 @@ class NetworkSampler:
 		Parameters
 		----------
 		G: nx.Graph, graph to sample edges from.
-		community_part_label: string, community-representing nodes partite attribute value.
-		vertex_part_label: string, other nodes partite attribute value.
+		community_part_label: string, community-representing-vertices part attribute value.
+		vertex_part_label: string, regular vertices part attribute value.
 		"""
+
 		self._community_part_label = community_part_label
 		self._vertex_part_label = vertex_part_label
 
@@ -40,15 +42,11 @@ class NetworkSampler:
 	# ...
 	########################################
 
-	def sample_network_edges(
-			self,
-			G: nx.Graph,
-			max_edges: int=None,
-			generate_negative_edges: bool=False):
+	def sample_network_edges(self, G: nx.Graph, max_edges: int = None, generate_negative_edges: bool = False):
 		"""
 		Returns 2 lists - (1) sampled positive edges and (2) negative edges \ an empty list.
 
-		Extracts community part nodes (community representing nodes).
+		Extracts community part vertices (community-representing-vertices).
 		Samples positive (existing) edges and generates same number of negative (non-existing) edges,
 		depending on generate_negative_edges boolean.
 
@@ -63,7 +61,7 @@ class NetworkSampler:
 		Two lists of edges (2nd might be empty, depending on generate_negative_edges parameter).
 		"""
 
-		# Obtain community partite nodes
+		# Obtain community part vertices
 		community_partite_nodes = [
 			node for (node, data)
 			in G.nodes(data=True)
@@ -73,13 +71,13 @@ class NetworkSampler:
 		# Select random max_edges or all positive edges
 		positive_edges = self._select_existing_edges(G, nodes_to_include=community_partite_nodes, max_edges=max_edges)
 
-		# determine whether to create negative edges (for training)
+		# Determine whether to create negative edges (for training)
 		if generate_negative_edges:
 
-			# maintain balanced train set by choosing same number of negative edges as positive edges
+			# Maintain balanced train set by choosing same number of negative edges as positive edges
 			negative_edges_num = len(positive_edges)
 
-			# generate random non existing links
+			# Generate random non existing links
 			negative_edges = self._select_non_existing_edges(G, n=negative_edges_num)
 
 		else:
@@ -136,20 +134,21 @@ class NetworkSampler:
 		"""
 		selected_edges = set()
 
-		# create lists of malt nodes and recipe nodes
+		# Create lists of community part vertices and regular vertices
 		comm_part_nodes = [v for (v, data) in G.nodes(data=True) if data['partite'] == self._community_part_label]
 		vertex_part_nodes = [v for (v, data) in G.nodes(data=True) if data['partite'] == self._vertex_part_label]
 
-		# remove nodes from comm_part_nodes possibilities if nodes_to_exclude is given
+		# Remove vertices from comm_part_nodes if nodes_to_exclude is given
 		if nodes_to_exclude is not None:
 			comm_part_nodes = list(set(comm_part_nodes) - set(nodes_to_exclude))
 
 		while len(selected_edges) < n:
+
 			# Randomly choose 2 nodes
 			community_node = random.choice(comm_part_nodes)
 			vertex_node = random.choice(vertex_part_nodes)
 
-			# Add edges if they not exist, and if not self edges
+			# Add edge if they not exists
 			if G.has_edge(community_node, vertex_node) or (vertex_node, community_node) in selected_edges:
 				continue
 			else:

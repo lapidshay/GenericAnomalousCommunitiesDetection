@@ -44,7 +44,35 @@ class BiPartiteCreator:
 		self._BPG = nx.Graph()
 
 	##################################
-	# Create BiPartite graph from...
+	# Utility methods
+	##################################
+
+	def _filter_partitions(self, community_list):
+		"""Filters in the wanted communities."""
+
+		# filter partition dictionary according to input community list
+		self._partitions_dict = {comm: self._unfiltered_partitions_dict[comm] for comm in community_list}
+
+	def _setify_vertices(self):
+		"""Creates a set of all vertices contained in the partitions."""
+
+		for part in self._partitions_dict:
+			self._vertices |= set(self._partitions_dict[part])
+
+	def _set_partite_labels(self, community_partite_label, vertex_partite_label):
+		"""Updates parts' labels attributes if given."""
+
+		if community_partite_label is not None:
+			self._community_partite_label = community_partite_label
+
+		if community_partite_label is not None:
+			self._vertex_partite_label = vertex_partite_label
+
+	def print_properties(self, network: str = ''):
+		print_bipartite_properties(BPG=self._BPG, network=network)
+
+	##################################
+	# Main methods
 	##################################
 
 	def create_bipartite_graph(
@@ -64,82 +92,52 @@ class BiPartiteCreator:
 
 		Parameters
 		----------
-		community_list: A list of communties to be fiterd in to create the BiPartite graph.
+		community_list: A list of communities to be filtered in to create the BiPartite graph.
 		community_partite_label: Optional; a string to label the vertices of the community part.
 		vertex_partite_label: Optional; a string to label the vertices of the vertices part.
 
 		Returns
 		-------
-		nx.Graph object contating the BiPartite graph.
+		nx.Graph object containing the BiPartite graph.
 
 		Examples
 		--------
 		The following will create a BiPartite graph called BPG,
-		which contains 3 communitey-representing vertices - 'comm1', 'comm2', 'comm3',
+		which contains 3 community-representing vertices - 'comm1', 'comm2', 'comm3',
 		and all the vertices that belong to their corresponding communities in the partition dictionary input,
-		and the partites will be names 'group' and 'user':
+		and the parts will be named 'group' and 'user':
 
 		>>> BPC = BiPartiteCreator(partitions_dict)
 		>>> BPG = BPC.create_bipartite_graph(['comm1', 'comm2', 'comm3'], 'group', 'user')
 		"""
 
-		# opens paritions_map file and filter in the wanted communities
+		# Filter in the wanted communities
 		self._filter_partitions(community_list)
 
-		# create a set of all vertices contained in the given communities
+		# Create a set of all vertices contained in the communities
 		self._setify_vertices()
 
-		# Update partite labels attributes if given
+		# Update part labels attributes if given
 		self._set_partite_labels(community_partite_label, vertex_partite_label)
 
-		# create community nodes partite attribute
+		# Create community-representing vertices partite attribute (for nx.Graph)
 		community_nodes = {comm: {'partite': self._community_partite_label} for comm in self._partitions_dict.keys()}
 
-		# create "regular" vertices nodes partite attribute
+		# Create "regular" vertices nodes partite attribute (for nx.Graph)
 		vertex_nodes = {vertex: {'partite': self._vertex_partite_label} for vertex in self._vertices}
 
-		# create BiPartite edges from partitions
+		# Create BiPartite edges from partitions
 		edges = []
 		for comm, comm_vertices in self._partitions_dict.items():
 			edges += [(comm, vertex) for vertex in comm_vertices]
 
-		# create BiPartie graph
+		# Create BiPartie graph with vertices' attributes
 		self._BPG.add_nodes_from(community_nodes.items())
 		self._BPG.add_nodes_from(vertex_nodes.items())
 		self._BPG.add_edges_from(edges)
 
-		# return a deep copy of the graph
+		# Return a deep copy of the graph
 		return deepcopy(self._BPG)
-
-	def _filter_partitions(self, community_list):
-		"""Filters in the wanted communities."""
-
-		# filter partition dictionary according to input community list
-		self._partitions_dict = {comm: self._unfiltered_partitions_dict[comm] for comm in community_list}
-
-	def _setify_vertices(self):
-		"""Creates a set of all vertices contained in the partitions"""
-		for part in self._partitions_dict:
-			self._vertices |= set(self._partitions_dict[part])
-
-	def _set_partite_labels(self, community_partite_label, vertex_partite_label):
-		"""Updates partite labels attributes if given."""
-
-		if community_partite_label is not None:
-			self._community_partite_label = community_partite_label
-
-		if community_partite_label is not None:
-			self._vertex_partite_label = vertex_partite_label
-
-	##################################
-	# Some Helper functions...
-	##################################
-
-	def print_properties(self, network: str=''):
-		print_bipartite_properties(self._BPG, network)
-	##################################
-	# Graph to BiPartite Graph representation
-	##################################
 
 	def create_bipartite_edges_df(
 			self,
@@ -150,7 +148,7 @@ class BiPartiteCreator:
 		Parameters
 		----------
 		save_path: Optional; A string indicating a path to save a CSV file.
-		save_csv: Optional; A boolean wheter to save a CSV file (in save_path).
+		save_csv: Optional; A boolean whether to save a CSV file (in save_path).
 
 		Returns
 		---------

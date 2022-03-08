@@ -11,7 +11,7 @@ import json
 from os import path
 from datetime import datetime
 from tqdm.autonotebook import tqdm
-from BaselineComparison.UnAttributedAMEN import UnAttributedAMEN
+from Baselines.UnAttributedAMEN import UnAttributedAMEN
 
 
 ##################################

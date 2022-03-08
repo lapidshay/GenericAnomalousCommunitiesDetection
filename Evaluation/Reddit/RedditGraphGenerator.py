@@ -21,7 +21,7 @@ import os
 class RedditGraphGenerator:
 	# TODO: support other normal and anomaly algorithms
 
-	def __init__(self, reddit_dir_path, anom_comm_alg, anom_inter_p , k_min, k_max):
+	def __init__(self, reddit_dir_path, anom_comm_alg, anom_inter_p, k_min, k_max):
 
 		self._reddit_dir_path = reddit_dir_path
 		self._anom_comm_alg = anom_comm_alg

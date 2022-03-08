@@ -1,7 +1,3 @@
-"""
-TODO: add module docstring.
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -18,7 +14,7 @@ from os.path import join
 
 
 ##################################
-#
+# Reddit Community Sizes Fetcher
 ##################################
 
 class RedditCommunitySizesFetcher:
@@ -42,11 +38,11 @@ class RedditCommunitySizesFetcher:
 
 		Parameters
 		----------
-		subreddit_name: aubreddit name.
+		subreddit_name: subreddit name.
 		use_edges_csv: a boolean to determine wheter to use edges ot vertices file.
 		"""
 
-		# Detrmine wheter to use edges or vetices file
+		# Determine whether to use edges or vertices file
 		typ = 'edges' if use_edges_csv else 'vertices'
 
 		# Create a full path of single subreddit edges / vertices csv file
@@ -64,6 +60,7 @@ class RedditCommunitySizesFetcher:
 			num_users = len(set(df['__src_id']).union(set(df['__dst_id'])))
 		else:
 			num_users = len(df['__id'])
+
 		# free memory
 		del df
 

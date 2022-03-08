@@ -3,3 +3,7 @@ xgboost
 tqdm
 numpy
 pandas
+networkx
+sklearn
+matplotlib
+seaborn

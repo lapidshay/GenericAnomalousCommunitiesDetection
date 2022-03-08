@@ -7,14 +7,14 @@
 # My Folders
 *archive/
 *Checkpoint/
-tests/
-SODA/
-FeaturesAnalysis/
+_tests/
+_SODA/
+_FeaturesAnalysis/
 Evaluation/Reddit/Experiment
 Evaluation/GeneratdNetwork/Experiment
 
 # My Files
-SecretTry.py
+_[^_]*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -139,4 +139,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-

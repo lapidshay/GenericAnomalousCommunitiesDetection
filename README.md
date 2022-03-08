@@ -4,4 +4,3 @@ It also contains the Anomaly-Infused Community-Structured Random-Network Generat
 ## To do:
 - [ ] Describe how to use the code
 - [ ] Finish documenting the code
-- [ ] Finish documenting the code

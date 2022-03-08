@@ -18,6 +18,9 @@ import json
 ##################################
 
 class UnAttributedAMEN:
+
+	# TODO: Finish and publish the vectorized version of UnAttributedAMEN
+
 	def __init__(self, G):
 		self._G = G  # Undirected networkx.Graph()
 		self._m = len(self._G.edges())  # Num edges

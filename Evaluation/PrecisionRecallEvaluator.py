@@ -1,8 +1,3 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -31,8 +26,6 @@ class PrecisionRecallEvaluator:
 		"""Creates a label column, and labels communities with 1 (anomalous) and 0 (normal)."""
 
 		self._df['anomalous'] = self._df[self._ranking_column].apply(lambda x: int(x in self._anom_comm_names))
-
-		# TODO: figure out why i did it
 		self._df[self._score_column] = - self._df[self._score_column]
 
 	def get_df(self):
@@ -41,16 +34,13 @@ class PrecisionRecallEvaluator:
 	def get_avg_precision(self, reverse=False):
 		"""Return average precision."""
 
-		# TODO: figure out why i did it
 		if reverse:
 			self._df[self._score_column] = - self._df[self._score_column]
-
 		return average_precision_score(self._df['anomalous'], self._df[self._score_column])
 
 	def plot_precision_recall(self, reverse=False):
 		"""Plots precision-recall curve."""
 
-		# TODO: figure out why i did it
 		if reverse:
 			self._df[self._score_column] = - self._df[self._score_column]
 

@@ -1,7 +1,3 @@
-"""
-TODO: add module docstring.
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -18,8 +14,7 @@ from os.path import join, isdir
 ##################################
 
 class SingleExperimentSettingDirCreator:
-	# TODO: remove checkpoint
-	def __init__(self, base_dir: str, network_generator_config: dict):
+	def __init__(self, base_dir: str, network_generator_config: dict, group_sizes: list):
 
 		self._base_dir = base_dir
 		self._network_generator_config = network_generator_config
@@ -27,8 +22,8 @@ class SingleExperimentSettingDirCreator:
 		# Create main directory name, composed of network generator configuration
 		self._experiment_main_dir_name = self._create_experiment_main_dir_name()
 
-		self._sub_dir_names = ['Data', 'ResultsAndLogs']  # 'Checkpoint'
-		self._group_sizes = ['min', 'quartile1', 'median', 'mean', 'random']
+		self._sub_dir_names = ['Data', 'ResultsAndLogs']
+		self._group_sizes = group_sizes
 
 	def _create_experiment_main_dir_name(self):
 		"""Creates main directory name, composed of network generator configuration."""
@@ -75,16 +70,6 @@ class SingleExperimentSettingDirCreator:
 		# Create sub-sub-dirs in Data sub-dir
 		mkdir(join(self._experiment_main_dir_name, 'Data', 'PartitionMaps'))
 		mkdir(join(self._experiment_main_dir_name, 'Data', 'Networks'))
-		#mkdir(join(self._experiment_main_dir_name, 'Data', 'RawOverlappingPartitionMaps'))
-
-		"""
-		# Create sub-sub-dirs - group sizes in Checkpoint sub-dir
-		[
-			mkdir(join(self._experiment_main_dir_name, 'Checkpoint', group))
-			for group
-			in self._group_sizes
-		]
-		"""
 
 		# Create sub-sub-dirs - group sizes in ResultsAndLogs sub-dir
 		[
@@ -115,7 +100,6 @@ class SingleExperimentSettingDirCreator:
 		"""Add single group size needed directories (at all levels)."""
 
 		# Create sub-sub-dirs
-		mkdir(join(self._experiment_main_dir_name, 'Checkpoint', group_size_name))
 		mkdir(join(self._experiment_main_dir_name, 'ResultsAndLogs', group_size_name))
 
 		# Create sub-sub-sub-dirs
@@ -123,27 +107,11 @@ class SingleExperimentSettingDirCreator:
 		mkdir(join(self._experiment_main_dir_name, 'Data', 'Networks', group_size_name))
 
 
-def create_experiment_directories(base_dir, network_generator_config):
+def create_experiment_directories(base_dir, network_generator_config, group_sizes):
 	for p in network_generator_config['anom_inter_p']:
 		for m in network_generator_config['anom_m']:
 
 			temp_dict = {k: v for k, v in network_generator_config.items()}
 			temp_dict['anom_inter_p'] = p
 			temp_dict['anom_m'] = m
-			SingleExperimentSettingDirCreator(base_dir, temp_dict).create_directories()
-
-
-if __name__ == '__main__':
-	#TODO: Delete
-	"""
-	from ExperimentSettings import EXPERIMENT_SETTINGS
-	base_dir = 'ExperimentBarabasi'
-	for p in EXPERIMENT_SETTINGS['anom_inter_p']:
-		for m in EXPERIMENT_SETTINGS['anom_m']:
-			temp_dict = {k: v for k, v in EXPERIMENT_SETTINGS.items()}
-			temp_dict['anom_inter_p'] = p
-			temp_dict['anom_m'] = m
-			SingleExperimentSettingDirCreator(base_dir, temp_dict).create_directories()
-			#DirCreator(base_dir, temp_dict).add_group_size_dir('quartile1')
-	"""
-	pass
+			SingleExperimentSettingDirCreator(base_dir, temp_dict, group_sizes).create_directories()

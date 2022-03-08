@@ -1,7 +1,3 @@
-"""
-TODO: add module docstring.
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -23,7 +19,6 @@ os.chdir('..')
 #os.chdir('..')  # Comment this row if using jupyter notebook
 from AnomalousCommunityDetection.AnomalousCommunityDetector import AnomalousCommunityDetector
 from BaselineComparison.CommunityRanker import CommunityRanker
-
 os.chdir(original_cur_dir)
 
 
@@ -117,16 +112,9 @@ class Experiment:
 			our_results.to_csv(our_results_fp)
 
 		if baseline_results is not None:
-			# TODO: Remove this
-			#basline_results_file_path = join(self._results_logs_dir_path, size_group, f'AMEN_AvgODF_BaseLineResults_{str(index):.2}.csv')
-			#basline_results_file_path = join(self._results_logs_dir_path, size_group, f'AMEN_BaseLineResults_{str(index):.2}.csv')
-
 			basline_results_fp = join(self._results_logs_dir_path, size_group, f'BaselineResults_{str(enumeration):.2}.csv')
 			baseline_results.to_csv(basline_results_fp)
 
-		# TODO: Remove comment, think of it
-		"""
-		"""
 		network_log_file_path = join(self._results_logs_dir_path, size_group, f'NetworkLog_{str(enumeration):.2}.json')
 		with open(network_log_file_path, 'w') as file:
 			json.dump(log_dict, file)
@@ -212,16 +200,6 @@ class Experiment:
 			self, size_group: str, num_anom_comms: int, rank_by: list, exclude_amen: bool, max_experiments: int):
 		"""
 		Performs a single size group's all experiments.
-
-		:param size_group:
-		:param train_partitions_maps_file_path:
-		:param test_partitions_maps_file_path:
-		:param test_network_file_path:
-		:param num_anom_comms:
-		:param rank_by:
-		:param exclude_amen:
-		:param enumeration:
-		:return:
 		"""
 		# Get all file paths in size group (of partitions maps and networks)
 		train_maps_fps, test_maps_fps = self._partitions_map_file_paths_by_size_group(size_group=size_group)
@@ -253,18 +231,9 @@ class Experiment:
 			max_experiments: int=10):
 		"""
 		Performs a all size groups' experiments.
-
-		:param size_group:
-		:param train_partitions_maps_file_path:
-		:param test_partitions_maps_file_path:
-		:param test_network_file_path:
-		:param num_anom_comms:
-		:param rank_by:
-		:param exclude_amen:
-		:param enumeration:
-		:return:
 		"""
-		for size_group in ['min', 'quartile1', 'median', 'mean', 'random']:
+		for size_group in ['min', 'quantile10', 'quartile1', 'median', 'random']:
+
 			print(f'\n########\n\tBeginning size group "{size_group}" experiment...\n########\n')
 			self.perform_single_size_group_experiments(
 				size_group=size_group,
@@ -288,8 +257,6 @@ def perform_all_experiments(
 	if dir_idx_tuple:
 		exp_dirs = [exp_dirs[idx] for idx in range(dir_idx_tuple[0], dir_idx_tuple[1])]
 		print(exp_dirs)
-	#exp_dirs = exp_dirs[17:-1]  # Starting from 'ErdosRenyi_p0.20_k[1,1]_m0.20' and excluding RawData dir
-	# to complete - 'ErdosRenyi_p0.20_k[1,1]_m0.10' random
 
 	for exp_dir in exp_dirs:
 		print(f'\n################\n################\n\tBeginning "{exp_dir}" experiments directory...\n################\n################\n')
@@ -305,72 +272,12 @@ def perform_specific_experiments(
 		detector_config: dict, detection_config: dict, num_anom_comms:int = 10,
 		baselines: list=None, exclude_amen:bool=False, max_experiments: int=10):
 
-	exp_dirs = listdir(experiment_dir)
-
-	#exp_dirs = exp_dirs[4:-1]  # Starting from 'ErdosRenyi_p0.30_k[1,1]_m0.40' and excluding RawData dir
-	#exp_dirs = exp_dirs[24:-1]  # Starting from 'ErdosRenyi_p0.25_k[1,1]_m0.80' and excluding RawData dir
-	#exp_dirs = exp_dirs[29:-1]  # Starting from 'ErdosRenyi_p0.30_k[1,1]_m0.80' and excluding RawData dir
-	#exp_dirs = exp_dirs[35:-1]  # Starting from 'ErdosRenyi_p0.40_k[1,1]_m0.05' and excluding RawData dir
-	# to complete - second or third folder, and p0.30_k[1,1]_m0.40 random
-
-
 	print(f'\n################\n################\n\tBeginning "{exp_dir_path}" experiments directory...\n################\n################\n')
 	exp = Experiment(experiment_main_dir_path=exp_dir_path, detector_config=detector_config, detection_config=detection_config)
 	for size_group in size_groups:
-		exp.perform_size_group_experiment(
+		exp.perform_single_size_group_experiments(
 			size_group=size_group,
 			num_anom_comms=num_anom_comms,
 			rank_by=baselines,
 			exclude_amen=exclude_amen,
 			max_experiments=max_experiments)
-
-
-if __name__ == '__main__':
-
-	experiment_dir = EXPERIMENT_DIR
-	detector_config = DETECTOR_CONFIG
-	detection_config = DETECTION_CONFIG
-	num_anom_comms = NUM_ANOM_COMMS
-	baselines = ['avg_degree', 'cut_ratio', 'conductance', 'flake_odf', 'avg_odf']#, 'unattr_amen']
-	#baselines = ['unattr_amen']
-
-	exclude_amen = False
-
-	"""
-	"""
-	perform_all_experiments(
-		experiment_dir=experiment_dir,
-		detector_config=detector_config,
-		detection_config=detection_config,
-		num_anom_comms=num_anom_comms,
-		baselines=baselines,
-		exclude_amen=exclude_amen,
-		max_experiments=5)
-
-	#exp_dir_path = 'Experiment\ErdosRenyi_p0.35_k[1,1]_m0.80'
-	#size_groups = ['median', 'mean', 'random']
-
-	#exp_dir_path = 'Experiment\ErdosRenyi_p0.30_k[1,1]_m0.40'
-	#size_groups = ['random']
-
-	#exp_dir_path = 'Experiment\ErdosRenyi_p0.05_k[1,1]_m0.20'
-	#size_groups = ['random']
-
-	"""
-	#exp_dir_path = 'Experiment_different_inter_edges\\ErdosRenyi_p0.40_k[1,1]_m0.40'
-	exp_dir_path = 'Experiment_different_inter_edges\\ErdosRenyi_p0.20_k[1,1]_m0.10'
-	size_groups = ['random']
-	perform_specific_experiments(
-		exp_dir_path=exp_dir_path,
-		size_groups=size_groups,
-		detector_config=detector_config,
-		detection_config=detection_config,
-		num_anom_comms=num_anom_comms,
-		baselines=baselines,
-		exclude_amen=exclude_amen,
-		max_experiments=7)
-	"""
-
-
-
-

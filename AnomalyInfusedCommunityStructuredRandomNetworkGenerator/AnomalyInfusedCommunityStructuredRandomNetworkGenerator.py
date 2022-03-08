@@ -1,10 +1,3 @@
-"""
-TODO: Check this code again!
-TODO: add module docstring.
-TODO: support other normal and anomaly algorithms
-TODO: fix random state and choose np or random random state.
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -30,6 +23,7 @@ class AnomalyInfusedCommunityStructuredRandomNetworkGenerator:
 	The class object contains the data of the graph partitions, as created during the graph generation.
 	"""
 
+	# TODO: support other normal and anomaly algorithms
 	def __init__(self, norm_comm_alg, anom_comm_alg, k_min, k_max, random_seed=None):
 		"""
 		Instantiates an object which creates the graph and holds partition data.

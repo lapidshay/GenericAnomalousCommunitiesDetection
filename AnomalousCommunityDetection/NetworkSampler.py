@@ -1,8 +1,3 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -16,18 +11,13 @@ import warnings
 
 
 ########################################
-# ...
+# Network Sampler
 ########################################
 
 class NetworkSampler:
-	"""
-	TODO: document
-	"""
 
 	def __init__(self, community_part_label: str, vertex_part_label: str):
 		"""
-		Inits a...
-
 		Parameters
 		----------
 		G: nx.Graph, graph to sample edges from.
@@ -37,10 +27,6 @@ class NetworkSampler:
 
 		self._community_part_label = community_part_label
 		self._vertex_part_label = vertex_part_label
-
-	########################################
-	# ...
-	########################################
 
 	def sample_network_edges(self, G: nx.Graph, max_edges: int = None, generate_negative_edges: bool = False):
 		"""
@@ -86,15 +72,7 @@ class NetworkSampler:
 		return positive_edges, negative_edges
 
 	def _select_existing_edges(self, G, nodes_to_include: list, max_edges=None):
-		"""Returns a list of all existing links or random max_edges existing links.
-
-		Parameters
-		----------
-		n:
-
-		Returns
-		-------
-		"""
+		"""Returns a list of all existing links or random max_edges existing links."""
 		selected_edges = set()
 
 		# Add all nodes_to_include edges
@@ -118,20 +96,7 @@ class NetworkSampler:
 		return set(random.sample(list(selected_edges), k=max_edges))
 
 	def _select_non_existing_edges(self, G, n, nodes_to_exclude: list = None):
-		"""Returns a list of random n non-existing edges.
-
-		TODO: determine whether to remove nodes_to_exclude option
-
-		Parameters
-		----------
-		G:
-		n:
-		nodes_to_exclude:
-
-		Returns
-		-------
-
-		"""
+		"""Returns a list of random n non-existing edges."""
 		selected_edges = set()
 
 		# Create lists of community part vertices and regular vertices

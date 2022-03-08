@@ -1,11 +1,5 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
-
 
 ########################################
 # imports
@@ -16,6 +10,10 @@ from tqdm.autonotebook import tqdm
 import pandas as pd
 from itertools import product
 
+
+########################################
+# Feature Extractor
+########################################
 
 class FeatureExtractor:
 	def __init__(self, g):
@@ -134,7 +132,7 @@ class FeatureExtractor:
 	########################################
 
 	def create_topological_features_df(
-			self, positive_edges: list, negative_edges: list, save: bool=False, save_dir_path: str=None):
+			self, positive_edges: list, negative_edges: list, save: bool = False, save_dir_path: str = None):
 		"""
 		Extracts topological features of all given edge lists and returns as DataFrame.
 
@@ -142,6 +140,7 @@ class FeatureExtractor:
 		One can provide both positive_edges list and negative_edges list or just positive edges.
 		"""
 
+		edges_dict = None
 		if negative_edges is not None and len(negative_edges) > 0:
 			edges_dict = self._get_all_topological_features(positive_edges, negative_edges)
 
@@ -154,4 +153,3 @@ class FeatureExtractor:
 			edges_df.to_csv(save_dir_path, index=True, encoding='UTF-8')
 
 		return edges_df
-

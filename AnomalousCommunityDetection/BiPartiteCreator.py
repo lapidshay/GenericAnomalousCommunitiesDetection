@@ -1,8 +1,3 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 

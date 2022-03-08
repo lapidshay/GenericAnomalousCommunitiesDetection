@@ -1,8 +1,3 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -15,10 +10,12 @@ import numpy as np
 
 
 ########################################
-# MetaFeatureExtractor
+# Meta-Feature Extractor
 ########################################
 
 class MetaFeatureExtractor:
+	# TODO: remove weighted sum and median meta-features
+
 	def __init__(self, edges_existence_prob_dict):
 
 		self.edge_probs = edges_existence_prob_dict
@@ -67,12 +64,6 @@ class MetaFeatureExtractor:
 		# edges existing probability meta-features
 		normality_prob_mean = np.mean(vertex_edges_probs)
 
-		######
-		######
-		# leave it ????
-		######
-		######
-
 		normality_prob_std = 1 - np.std(vertex_edges_probs)
 
 		normality_prob_median = np.median(vertex_edges_probs)
@@ -82,12 +73,6 @@ class MetaFeatureExtractor:
 
 		# labeled edges meta-features
 		predicted_label_mean = np.mean(labels_by_thresh)
-
-		######
-		######
-		# leave it ????
-		######
-		######
 
 		predicted_label_std = 1 - np.std(labels_by_thresh)
 
@@ -109,39 +94,18 @@ class MetaFeatureExtractor:
 
 	@staticmethod
 	def _weighted_sum(npmean, npstd, npmed, prlmean, prlstd):
-		####
-		# Reddit
-		####
 
-		#weights = np.array([9.22421127, -3.89997392, 0.11203075, 10.08882187, -3.48322422])  # 1-std
-		#weights = np.array([0.34535817, 0.14617009, 0.00369713, 0.38446181, 0.12031281])  # std
-
-		#weights = np.array([-11.00535, 2.09727, -0.01981, -11.2241, 2.31862])
-		#weights = np.array([-20.38115, 3.51572, -0.1253, -18.01393, 11.02389])  # 21.04 try
-		#intercept = 14.78863
-		#intercept = 24.10015  # 21.04 try
-
-		#weights = np.array([0.15183381, -0.03859362, 0.00116014, 0.14657687, -0.0609772])  # 29.04.21 reddit
-		weights = np.array([-0.5, 0.5, 0, -0.5, 0.5])  # 2021-09-03 try equal weight
+		weights = np.array([-0.5, 0.5, 0, -0.5, 0.5])
 		meta_feats_arr = np.vstack((npmean, npstd, npmed, prlmean, prlstd)).T
 		return np.squeeze(meta_feats_arr.dot(weights))
 
-	def get_comm_repr_vertices_meta_features(self, thresh=0.8):
+	def get_comm_repr_vertices_meta_features(self, thresh):
 		"""
-		TODO: document
 		Extract meta-features and returns as dictionary of form {comm_name: {meta-feat_1: x_1, ... meta-feat_n: x_n}}.
-
-		Parameters
-		----------
-		thresh: A float to...
 
 		Returns
 		-------
 		Dictionary containing each community-representing meta-features.
-
-		Examples
-		--------
-		...
 		"""
 
 		return {

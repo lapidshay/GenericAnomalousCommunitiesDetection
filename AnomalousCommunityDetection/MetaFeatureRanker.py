@@ -1,8 +1,3 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -14,7 +9,7 @@ import pandas as pd
 
 
 ########################################
-# MetaFeatureRanker
+# Meta-Feature Ranker
 ########################################
 
 class MetaFeatureRanker:
@@ -28,6 +23,7 @@ class MetaFeatureRanker:
 
 		ranked_features_mini_dfs = []
 		for col in self._meta_feature_scores_df.columns:
+
 			# Sort series and convert to 1-column DataFrame with community names as index
 			col_mini_df = self._meta_feature_scores_df[col].sort_values(ascending=False).to_frame()
 

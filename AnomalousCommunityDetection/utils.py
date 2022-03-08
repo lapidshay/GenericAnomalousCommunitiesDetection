@@ -1,11 +1,5 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
-
 
 ##################################
 # Imports
@@ -24,8 +18,7 @@ from sklearn import metrics
 # Anomalous Community Detector Utils
 ##################################
 
-def checkpoint_paths(dir_path: str=None, save: bool=False):
-
+def checkpoint_paths(dir_path: str = None, save: bool = False):
 	# file names
 	train_path = 'Train_Topological_Features.csv'
 	test_path = 'Test_Topological_Features.csv'
@@ -49,7 +42,6 @@ def load_topological_features_df(dir_path: str):
 	# get train and test file paths
 	train_path, test_path = checkpoint_paths(dir_path=dir_path, save=False)
 
-
 	# read CSV files to DataFrames
 	train_df = pd.read_csv(train_path, index_col=0)
 	test_df = pd.read_csv(test_path, index_col=0)
@@ -62,7 +54,7 @@ def load_topological_features_df(dir_path: str):
 ##################################
 
 
-def print_bipartite_properties(BPG, network: str=''):
+def print_bipartite_properties(BPG, network: str = ''):
 	"""Prints the properties of a bipartite graph."""
 
 	props = get_bipartite_properties(BPG)
@@ -111,14 +103,7 @@ def _get_partite_vertices(BPG, partite_label):
 ##################################
 
 def model_validation(model, X, y, val_size):
-	"""
-	Model performance evaluation
-	:param model:
-	:param X:
-	:param y:
-	:param val_size:
-	:return:
-	"""
+	"""Model performance evaluation"""
 	# split to train and validation sets, and split data and labels
 	train_X, val_X, train_y, val_y = train_test_split(X, y, test_size=val_size)
 
@@ -200,7 +185,6 @@ def _index_tuple_literal_eval(string: str):
 
 
 def _index_tuple_literal_eval_with_ordering(string: str, comm_before_user: bool, vertex_to_int: bool):
-
 	# split string of form "(aa, xx, .., zz)" to "aa" and ["xx", .., "zz"]
 	community, *vertex = string[1:-1].split(', ')
 
@@ -216,7 +200,7 @@ def _index_tuple_literal_eval_with_ordering(string: str, comm_before_user: bool,
 
 
 def convert_literal_tuple_string_index_to_tuple(
-		df: pd.DataFrame, comm_before_user: bool=True, vertex_to_int: bool=False):
+		df: pd.DataFrame, comm_before_user: bool = True, vertex_to_int: bool = False):
 	"""
 	Converts a DataFrame's literal string index of form '(community, vertex)' to a tuple (community, vertex) index.
 
@@ -238,56 +222,3 @@ def convert_literal_tuple_string_index_to_tuple(
 
 	# convert back to index
 	df.set_index('evaluated_index', inplace=True)
-
-
-##################################
-# The rest are not in use and needed to be filtered
-##################################
-
-##################################
-# BiPartite Projection to one space
-##################################
-
-def project_bipartite_to_space(self, g: nx.Graph, space: str, min_shared: int = 1):
-	"""
-	TODO: make it relevant or delete
-	project a BiPartite graph to either of spaces.
-	return a new graph with edges between vertices who share at least min_shared vertices from the other space.
-	the weight of the edgese is determined by number of shared vertices from other space
-	weight - number of shared recipes
-
-	:param G: original BiPartite graph
-	:param space: which space to project
-	:param min_shared: the minimal number of shared vertices to create an edge
-	:return: a new graph
-	"""
-
-	# validate space variable
-	assert space == self.partite_1_name or space == self.partite_2_name, \
-		'space is neither "grain" or "recipe"'
-
-	# copy only vertices from graph G, together with their attributes
-	PG = nx.create_empty_copy(g, with_data=True)
-
-	# create a list of non-space vertices names, to remove from graph copy
-	non_space_vertices = [vertx[0] for vertx in (g.nodes(data=True)) if vertx[1]['partite'] != space]
-
-	# remove all non-space vertices
-	PG.remove_vertices_from(non_space_vertices)
-
-	# create a list of space vertices names, mainly for second loop indices
-	space_vertices_name_list = list(PG.vertices())
-
-	# iterate through every pair of vertices
-	for prj1 in space_vertices_name_list:
-		for prj2 in space_vertices_name_list[space_vertices_name_list.index(prj1) + 1:]:
-
-			# count common neighbors
-			# i.e. common recipes for grain space, ot common grains for recipe space
-			common = len(list(nx.common_neighbors(g, prj1, prj2)))
-
-			# create an edge if vertx share at least min_shared vertices from other space
-			if common >= min_shared:
-				PG.add_edge(prj1, prj2, weight=common)
-
-	return PG

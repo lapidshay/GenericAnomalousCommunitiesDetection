@@ -1,8 +1,3 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -16,24 +11,12 @@ from .utils import \
 
 
 ########################################
-# LinkPredictor
+# Link Predictor
 ########################################
 
 class LinkPredictor:
-	"""
-	TODO: document
-	"""
 
 	def __init__(self, classifier_model):
-		"""
-		TODO: document
-		Inits a...
-
-		Parameters
-		----------
-		classifier_model: ..
-		label_col_name: ..
-		"""
 
 		self._model = classifier_model
 		self._label_col_name = None
@@ -48,7 +31,6 @@ class LinkPredictor:
 
 	def fit(self, train_df: pd.DataFrame, label_col_name: str, val_size: float=0.1, verbose: bool=False):
 		"""
-		TODO: document
 		Trains a classifier.
 
 		First splits to train and validation set to evaluate a copy of the classifier's performance and report it.
@@ -103,7 +85,7 @@ class LinkPredictor:
 			[print(f'\t{str(k).ljust(10)}: {str(v)[:5]}') for k, v in self._test_set_prediction_summary.items()]
 
 	def get_edges_existence_prob(
-			self, test_df: pd.DataFrame, comm_before_user: bool=True, vertex_to_int: bool=False, verbose=False):
+			self, test_df: pd.DataFrame, comm_before_user: bool = True, vertex_to_int: bool=False, verbose=False):
 		"""
 		TODO: document
 
@@ -111,9 +93,9 @@ class LinkPredictor:
 
 		Parameters
 		----------
-		test_df: A list of communties to be fiterd in to create the BiPartite graph.
+		test_df: A list of communities to be filtered in to create the BiPartite graph.
 		comm_before_user: Optional; a string to label the vertices of the community part.
-		index_str_before_digit: Optional; a string to label the vertices of the vertices part.
+		vertex_to_int: Optional; a boolean to interpret vertices numbers as integers.
 		verbose: Optional; default=False
 			A boolean to determine whether to print the trained classifier evaluation scores.
 
@@ -124,7 +106,7 @@ class LinkPredictor:
 		Examples
 		--------
 		The following will create a BiPartite graph called BPG,
-		which contains 3 communitey-representing vertices - 'comm1', 'comm2', 'comm3',
+		which contains 3 community-representing vertices - 'comm1', 'comm2', 'comm3',
 		and all the vertices that belong to their corresponding communities in the partition dictionary input,
 		and the partites will be names 'group' and 'user':
 
@@ -147,29 +129,3 @@ class LinkPredictor:
 
 		# create a dictionary
 		return {idx: pr for idx, pr in zip(test_df.index, probs)}
-
-# TODO: verify not needed and delete
-"""
-
-# instantiate a DataFrame with only the indices of input DataFrame, to populate with edges existence probabilities
-df_to_dict = df[[]]
-
-# get all edges existence probabilities
-df_to_dict['existence_prob'] = self._get_edges_exist_probability(df)
-
-# infer index type
-index_type = type(df_to_dict.index[0])
-
-# if index is of str type
-if index_type == str:
-
-	# converts DataFrame's literal string index to a tuple (int, str) index
-	link_prediction_utils.convert_literal_string_index_to_tuple(
-		df_to_dict, comm_before_user=comm_before_user, index_str_before_digit=index_str_before_digit)
-
-# create a dictionary of edge and it's existing probability
-edges_exist_prob_dict = df_to_dict.to_dict(orient='index')
-
-return edges_exist_prob_dict
-
-"""

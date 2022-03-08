@@ -1,10 +1,3 @@
-"""
-TODO: Check this code again!
-TODO: add module docstring.
-TODO: support other normal and anomaly algorithms
-TODO: fix random state and choose np or random random state
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -26,6 +19,7 @@ import os
 ##################################
 
 class RedditGraphGenerator:
+	#TODO: support other normal and anomaly algorithms
 
 	def __init__(self, reddit_dir_path, anom_comm_alg, anom_inter_p , k_min, k_max):
 
@@ -168,7 +162,6 @@ class RedditGraphGenerator:
 		:param anom_comm_sizes: A list of integers, containing sizes of normal communities.
 		:param anom_m: currently, for erdos_renyi_graph algorithm, it is p (Probability for edge creation).
 		:return: A deep copy of the nx.Graph.
-		TODO: allow input of different arguments to different anomalous community algorithm, other than anom_m
 		"""
 
 		# add enumerated-named nodes, according to normal anomalous community sizes and the existing normal community nodes
@@ -184,10 +177,6 @@ class RedditGraphGenerator:
 			anom_comm_mapping = {u: u + self._start for u in range(0, n)}
 			current_comm = nx.relabel_nodes(current_comm, anom_comm_mapping)
 			current_comm = nx.relabel_nodes(current_comm, node_mapping)
-
-			# create edges for each of communities' sizes
-			# self._start is used to modify edge names to align with correct community's nodes
-			#edges = ((u + self._start, v + self._start) for u, v in current_comm.edges())
 
 			# add edges and nodes to main graph
 			self._G.add_edges_from(current_comm.edges())
@@ -262,8 +251,6 @@ class RedditGraphGenerator:
 
 					# add edges between partitions
 					self._G.add_edge(node_to_connect_from, node_to_connect_to)
-
-					#print(f'node "{node_to_connect_from}" from "{anom_comm_name}" was connected to node "{node_to_connect_to}" from "{outer_partition_to_connect}"')
 
 					# update that partition to contain the newly connected node
 					self._updated_partitions[outer_partition_to_connect].append(node_to_connect_from)

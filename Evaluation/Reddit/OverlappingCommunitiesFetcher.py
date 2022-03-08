@@ -1,8 +1,3 @@
-"""
-TODO: add module docstring.
-
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -14,7 +9,6 @@ import pandas as pd
 from os.path import join
 from os import listdir
 import numpy as np
-import json
 from tqdm.autonotebook import tqdm
 
 
@@ -252,30 +246,3 @@ class OverlappingCommunitiesFetcher:
 		reduced_partition_names = np.array(list(partitions_map.keys()))[non_all_zero_rows_indices].tolist()
 
 		return reduced_common_vertices_matrix, reduced_partition_names
-
-
-def set_random_seed(random_seed):
-	np.random.seed(random_seed)
-
-
-if __name__ == '__main__':
-	REDDIT_MAIN_PATH = 'E:\\Datasets\\reddit'
-	OUTPUT_PATH = 'Data\\RawOverlappingPartitionMaps'
-	CONFIG = {
-		'random_try': 1500,
-		'max_comms': 110,
-		'min_edge_weight': 3,
-		'min_common_vertices': 3,
-		'min_co_occurrences': 3,
-		'min_comm_size': 30,
-		'max_comm_size': 1500
-	}
-
-	fetcher = OverlappingCommunitiesFetcher(REDDIT_MAIN_PATH)
-
-	for random_seed in tqdm(range(101, 111)):
-		set_random_seed(random_seed)
-		overlapping_partitions = fetcher.create_overlapping_communities_partitions(**CONFIG)
-		file_path = join(OUTPUT_PATH, f'partitions_map_{random_seed}.json')
-		with open(file_path, 'w') as file:
-			json.dump(overlapping_partitions, file)

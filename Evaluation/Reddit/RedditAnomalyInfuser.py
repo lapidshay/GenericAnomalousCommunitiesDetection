@@ -1,7 +1,3 @@
-"""
-TODO: add module docstring.
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -17,7 +13,6 @@ from CommunitySizesGenerator import CommunitySizesGenerator
 from tqdm.autonotebook import tqdm
 import itertools
 import networkx as nx
-
 original_cur_dir = os.getcwd()
 os.chdir('..')
 from SingleExperimentSettingDirCreator import SingleExperimentSettingDirCreator
@@ -64,8 +59,9 @@ class RedditAnomalyInfuser:
 
 	def _log_configuration(self):
 		file_path = os.path.join(self._output_dir_path, 'Configuration_Log.json')
-		net_gen_config_log = {k: v for k,v in self._network_generator_config.items()}
-		net_gen_config_log['anom_comm_alg'] = net_gen_config_log['anom_comm_alg'].__name__  # random graph generator name
+		net_gen_config_log = {k: v for k, v in self._network_generator_config.items()}
+		net_gen_config_log['anom_comm_alg'] = net_gen_config_log[
+			'anom_comm_alg'].__name__  # random graph generator name
 
 		with open(file_path, 'w', encoding='UTF8') as file:
 			json.dump(net_gen_config_log, file)
@@ -100,7 +96,7 @@ class RedditAnomalyInfuser:
 
 		return sub_betwork
 
-	def _partitions_train_test_split(self, partitions_map: dict, num_anom_comms: int, random_seed: int=None):
+	def _partitions_train_test_split(self, partitions_map: dict, num_anom_comms: int, random_seed: int = None):
 		"""Returns 2 dictionaries of partitions maps for train and test sets."""
 
 		if random_seed is not None:
@@ -120,11 +116,18 @@ class RedditAnomalyInfuser:
 		test_partitions_map = {k: v for k, v in partitions_map.items() if k not in train_set_comms_names}
 
 		return train_partitions_map, test_partitions_map
+
 	##################################
 	# Output utility methods
 	##################################
 
-	def save_partition_map(self, partitions_map: dict, anom_comm_size_group: str, raw_file_path: str, train_or_test: str):
+	def save_partition_map(
+			self,
+			partitions_map: dict,
+			anom_comm_size_group: str,
+			raw_file_path: str,
+			train_or_test: str):
+
 		file_name = os.path.split(raw_file_path)[-1][:-5]  # last in split, without '.json' extension
 		file_path = os.path.join(
 			self._partition_maps_output_dir, anom_comm_size_group, f'{file_name}_{train_or_test}.json')
@@ -196,7 +199,8 @@ class RedditAnomalyInfuser:
 		for rand_seed, input_fp in tqdm(enumerate(self._raw_partitions_map_file_paths)):
 			train_partitions_map, test_partitions_map, test_sub_network = self.create_single_network(
 				raw_partitions_map_file_path=input_fp,
-				anom_comm_size_group=anom_comm_size_group, rng=rng, random_seed=rand_seed, num_anom_comms=num_anom_comms,
+				anom_comm_size_group=anom_comm_size_group, rng=rng, random_seed=rand_seed,
+				num_anom_comms=num_anom_comms,
 				verbose=verbose
 			)
 
@@ -219,7 +223,6 @@ def create_experiment_networks(
 		experiment_settings: dict,
 		num_anom_comms: int = 10,
 		verbose=False):
-
 	for p in experiment_settings['anom_inter_p']:
 		for m in experiment_settings['anom_m']:
 
@@ -230,7 +233,9 @@ def create_experiment_networks(
 
 			# Create paths
 			current_experiment_dir = SingleExperimentSettingDirCreator(
-				base_dir, cur_network_generator_config)._experiment_main_dir_name
+				base_dir,
+				cur_network_generator_config,
+				['min', 'quantile10', 'quartile1', 'median', 'random'])._experiment_main_dir_name
 			output_dir_path = os.path.join(current_experiment_dir, 'Data')
 
 			# Create Anomaly infuser
@@ -243,38 +248,11 @@ def create_experiment_networks(
 
 			# Infuse anomalies of different group sizes and ranges
 			for group, rng in zip(
-					['min', 'quartile1', 'median', 'mean', 'random'], [20, 40, 50, 80, 0]):
-
+					['min', 'quantile10', 'quartile1', 'median', 'random'],
+					[20, 30, 40, 50, 0]):
 				anomaly_infuser.create_networks_with_anom_comm_size_group(
 					anom_comm_size_group=group, rng=rng, num_anom_comms=num_anom_comms, verbose=verbose)
 
 			print(f'Finished infusing anomalies to p={p}, m={m}')
 
-
-if __name__ == '__main__':
-
-	"""
-	from ExperimentSettings import EXPERIMENT_SETTINGS
-	from DirCreator import DirCreator
-
-	##################################
-	# Network Generating Config
-	##################################
-
-	REDDIT_DATASET_DIR_PATH = 'E:\\Datasets\\reddit'
-	RAW_PARTITION_MAPS_DIR_PATH = 'Data\\RawOverlappingPartitionMaps'
-	PARTITION_MAPS_NETWORKS_OUTPUT_DIR = 'Data'
-
-
-	TRAIN_TEST_SPLIT = 20  # number of communities in test set
-
-
-	create_experiment_networks(
-		reddit_dataset_dir_path=REDDIT_DATASET_DIR_PATH,
-		train_test_split_num=TRAIN_TEST_SPLIT,
-		experiment_settings=EXPERIMENT_SETTINGS,
-		num_anom_comms=10,
-		verbose=False)
-	"""
-	pass
 

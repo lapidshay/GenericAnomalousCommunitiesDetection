@@ -1,7 +1,3 @@
-"""
-TODO: add module docstring.
-"""
-
 __author__ = 'Shay Lapid'
 __email__ = 'lapidshay@gmail.com'
 
@@ -27,7 +23,7 @@ class CommunitySizesGenerator:
 		"""
 
 		self._partitions_sizes = sorted([len(val) for val in partitions_map.values()])
-		self._size_groups = ['min', 'quartile1', 'median', 'mean', 'random']
+		self._size_groups = ['min', 'quantile10', 'quartile1', 'median', 'random']
 
 	@staticmethod
 	def _print(sizes, size_group):
@@ -53,7 +49,7 @@ class CommunitySizesGenerator:
 
 		Parameters
 		----------
-		size_group: a keyword, to determine sizes. should be either of ['min', 'median', 'mean', 'quartile1', 'random'].
+		size_group: a keyword, to determine sizes. should be either of ['min', 'quantile10', 'quartile1', 'median', 'random'].
 		rng: range of sizes to create around the given measure.
 		num_samples: number of samples to create.
 		random_seed: ...
@@ -79,8 +75,8 @@ class CommunitySizesGenerator:
 			val_1 = np.median(self._partitions_sizes) - int(rng/2)
 			val_2 = val_1 + rng + 1
 
-		elif size_group == 'mean':
-			val_1 = np.mean(self._partitions_sizes) - int(rng/2)
+		elif size_group == 'quantile10':
+			val_1 = np.quantile(self._partitions_sizes, q=0.1) - int(rng/2)
 			val_2 = val_1 + rng + 1
 
 		elif size_group == 'quartile1':
@@ -95,26 +91,3 @@ class CommunitySizesGenerator:
 		if verbose:
 			self._print(output, size_group)
 		return output
-
-
-if __name__=='__main__':
-	pmap = {'a':[0]*10, 'b':[0]*20, 'c':[0]*30}
-	gen = CommunitySizesGenerator(pmap)
-	print(np.percentile(gen._partitions_sizes, q=75))
-	print(gen._partitions_sizes)
-	gen.generate_community_sizes(size_group='median', rng=2, random_seed=1, verbose=True)
-	import json
-	RAW_PARTITION_MAP_PATH = 'Experiment\\ErdosRenyi_p0.05_k[1,1]_m0.02\\Data\\RawOverlappingPartitionMaps\\partitions_map_0.json'
-	with open(RAW_PARTITION_MAP_PATH, 'r') as file:
-		pmap = json.load(file)
-
-	gen = CommunitySizesGenerator(pmap)
-	print(f'population quartile 1: {np.percentile(gen._partitions_sizes, q=25)}')
-	print(f'population median: {np.median(gen._partitions_sizes)}')
-
-	print(f'population mean: {np.mean(gen._partitions_sizes)}')
-
-	print(gen._partitions_sizes)
-	gen.generate_community_sizes(size_group='quartile1', rng=40, random_seed=1, verbose=True)
-
-

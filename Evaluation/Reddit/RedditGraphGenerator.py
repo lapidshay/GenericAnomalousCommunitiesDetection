@@ -19,7 +19,7 @@ import os
 ##################################
 
 class RedditGraphGenerator:
-	#TODO: support other normal and anomaly algorithms
+	# TODO: support other normal and anomaly algorithms
 
 	def __init__(self, reddit_dir_path, anom_comm_alg, anom_inter_p , k_min, k_max):
 

@@ -36,7 +36,6 @@ class AnomalyInfusedCommunityStructuredRandomNetworkGenerator:
 		k_min: minimal number of edges to be created from each node.
 		k_max: maximal number of edges to be created from each node.
 		random_seed:
-		TODO: support other normal and anomaly algorithms
 		"""
 
 		self._norm_comm_alg = norm_comm_alg
@@ -58,7 +57,6 @@ class AnomalyInfusedCommunityStructuredRandomNetworkGenerator:
 	def generate_network(self, norm_comm_sizes, norm_m, norm_inter_p, anom_comm_sizes, anom_m, anom_inter_p):
 		"""
 		Generates an Anomaly-Infused Community-Structured Random Network.
-		TODO: allow input of different arguments to different normal community algorithm, other than norm_m
 
 		Parameters
 		----------
@@ -100,8 +98,6 @@ class AnomalyInfusedCommunityStructuredRandomNetworkGenerator:
 	def create_normal_comms(self, norm_comm_sizes, norm_m, norm_inter_p):
 		"""
 		Generates a community-structured graph.
-
-		TODO: allow input of different arguments to different normal community algorithm, other than norm_m
 
 		Parameters
 		----------
@@ -153,7 +149,6 @@ class AnomalyInfusedCommunityStructuredRandomNetworkGenerator:
 
 			# create edges for each of communities' sizes
 			# self._start is used to modify edge names to align with correct community's nodes
-			# TODO: allow input of different arguments to different normal community algorithm
 			edges = (
 				(u + self._start, v + self._start)
 				for u, v
@@ -264,7 +259,6 @@ class AnomalyInfusedCommunityStructuredRandomNetworkGenerator:
 		:param anom_comm_sizes: A list of integers, containing sizes of normal communities.
 		:param anom_m: currently, for erdos_renyi_graph algorithm, it is p (Probability for edge creation).
 		:return: A deep copy of the nx.Graph.
-		TODO: allow input of different arguments to different anomalous community algorithm, other than anom_m
 		"""
 
 		# add enumerated-named nodes, according to normal anomalous community sizes and the existing normal community nodes

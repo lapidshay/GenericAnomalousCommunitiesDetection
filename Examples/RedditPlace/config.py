@@ -12,7 +12,7 @@ CONFIG = {
 	'vertex_partite_label': 'User',
 	'classifer_obj': XGBClassifier(),
 	'max_edges_to_sample': None,
-	'label_thresh': 0.98,
+	'label_thresh': 0.5,
 	'val_size': 0.2,
 	'save_topological_features': True,
 	'save_dir_path': 'Checkpoint',
